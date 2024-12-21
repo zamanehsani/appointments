@@ -16,6 +16,9 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
+# Run Prisma Migrations
+# RUN npx prisma migrate deploy
+
 # Build the application
 RUN npm run build
 
@@ -34,4 +37,4 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3001
 
 # Start the application
-CMD ["node", "dist/src/index.js"] 
+CMD ["node", "dist/index.js"] 
