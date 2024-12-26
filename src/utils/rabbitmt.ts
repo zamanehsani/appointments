@@ -7,11 +7,11 @@ class RabbitMQ {
   async connect(): Promise<void> {
     try {
       if (this.connection) return;
+      console.log("Connecting to RabbitMQ...", process.env.RABBITMQ_URL);
       this.connection = await amqp.connect(
         process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672"
       );
       this.channel = await this.connection.createChannel();
-      console.log("Successfully connected to rabbitmq");
     } catch (error) {
       console.error("Error connecting to RabbitMQ:", error);
       throw new Error("Error connecting to RabbitMQ");

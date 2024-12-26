@@ -17,6 +17,7 @@ export const addAppointment = async (data: any) => {
       data,
     });
     await rabbitmq.publish("appointments", "appointment.created", appointment);
+    console.log("Appointment created successfully and published to RabbitMQ");
     return appointment;
   } catch (error) {
     console.error("Error creating appointmnet:", error);
