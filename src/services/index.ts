@@ -12,11 +12,11 @@ export const addAppointment = async (data: any) => {
       dateInstance.setHours(0, 0, 0, 0); //Set time to the beginning of the day
       data.date = dateInstance;
     }
-
     const appointment = await prisma.appointments.create({
       data,
     });
     await rabbitmq.publish("appointments", "appointment.created", appointment);
+
     console.log("Appointment created successfully and published to RabbitMQ");
     return appointment;
   } catch (error) {
