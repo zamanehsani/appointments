@@ -12,6 +12,7 @@ model Appointments {
   date         DateTime  
   time         String?
   patient      String
+  doctor       String?
   madeby       String?
   department   String?
   services     String?
