@@ -8,13 +8,16 @@ datasource db {
 }
 
 model Appointments {
-  id           String    @id @default(uuid())
-  date         DateTime  
-  time         String?
-  patient      String
-  doctor       String?
-  madeby       String?
-  department   String?
-  services     String?
-  note         String?
+  id             String    @id @default(uuid())
+  date           DateTime  
+  time           String?
+  patient        String
+  doctor         String?
+  madeby         String?
+  department     String?
+  services       String?
+  note           String?
+  patientDetails Json?
+  doctorDetails  Json?
+  createdAt      DateTime @default(now())
 }

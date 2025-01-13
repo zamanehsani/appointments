@@ -78,22 +78,23 @@ export const getAppointmentById = async (id: string) => {
 
 export const getAppointmentBySearch = async (query: any) => {
   try {
-    const { date, time, patient, department, services } = query;
+    const { term, date } = query;
 
     const whereClause: any = {};
 
-    if (!date && !time && !patient && !department && !services) {
+    if (!term && !date) {
       throw new Error("Please provide at least one search parameter.");
     }
 
     if (date) {
       try {
-        const datei = new Date(date as string);
-        const startOfDay = new Date(datei);
-        const endOfDay = new Date(datei);
+        const dateInstance = new Date(date as string);
+        const startOfDay = new Date(dateInstance);
+        const endOfDay = new Date(dateInstance);
         startOfDay.setUTCHours(0, 0, 0, 0); // Set UTC time to the start of the day
         endOfDay.setUTCHours(23, 59, 59, 999); // Set UTC time to the end of the day
-        whereClause.date = {
+
+        whereClause.createdAt = {
           gte: startOfDay,
           lte: endOfDay,
         };
@@ -102,26 +103,15 @@ export const getAppointmentBySearch = async (query: any) => {
       }
     }
 
-    if (time) {
-      whereClause.time = { contains: time as string, mode: "insensitive" };
-    }
-    if (patient) {
-      whereClause.patient = {
-        contains: patient as string,
-        mode: "insensitive",
-      };
-    }
-    if (department) {
-      whereClause.department = {
-        contains: department as string,
-        mode: "insensitive",
-      };
-    }
-    if (services) {
-      whereClause.services = {
-        contains: services as string,
-        mode: "insensitive",
-      };
+    if (term) {
+      whereClause.OR = [
+        { patient: { contains: term as string, mode: "insensitive" } },
+        { doctor: { contains: term as string, mode: "insensitive" } },
+        { madeby: { contains: term as string, mode: "insensitive" } },
+        { services: { contains: term as string, mode: "insensitive" } },
+        { department: { contains: term as string, mode: "insensitive" } },
+        { note: { contains: term as string, mode: "insensitive" } },
+      ];
     }
 
     const appointments = await prisma.appointments.findMany({
