@@ -58,7 +58,7 @@ export const getAppointmentBySearch = async (
 ): Promise<any> => {
   try {
     const appointment = await getAppointmentBySearchService(req.query);
-    if (!appointment || appointment.length === 0) {
+    if (!appointment) {
       console.log("No appointment found");
       return res.status(404).json({ message: "No appointment found" });
     }

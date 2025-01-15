@@ -118,8 +118,10 @@ export const getAppointmentBySearch = async (query: any) => {
       where: whereClause,
     });
 
-    if (!appointments || appointments.length === 0) {
-      throw new Error("No appointments found");
+    console.log("apoint: ", appointments);
+
+    if (!appointments) {
+      throw new Error("Error retrieving appointments");
     }
 
     return appointments;
